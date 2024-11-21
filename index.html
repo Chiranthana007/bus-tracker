@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Tracker</title>
+  <link rel="stylesheet" href="style.css">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3Ky31jo5ifs2fs9fZqH5vD1IizEu4Yoc"></script>
+
+</head>
+<body>
+  <div class="header-container">
+    <h1>Bus Tracker</h1>
+    <h2>Search for buses</h2>
+  </div>
+
+  <!-- Form to select From and To locations -->
+  <form id="search-form" onsubmit="return redirectToBusesPage(event)">
+    <label for="from-location">From Location</label>
+    <select id="from-location" name="from-location" required>
+      <option value="" disabled selected>Search...</option>
+      <option value="Kengeri">Kengeri</option>
+      <option value="Yelahanka">Yelahanka</option>
+      <option value="Koramangala">Koramangala</option>
+      <option value="Electronic City">Electronic City</option>
+      <option value="Malleswaram">Malleswaram</option>
+      <option value="Banashankari">Banashankari</option>
+    </select>
+
+    <label for="to-location">To Location</label>
+    <select id="to-location" name="to-location" required>
+      <option value="" disabled selected>Search...</option>
+      <option value="Yelahanka">Yelahanka</option>
+      <option value="Kengeri">Kengeri</option>
+      <option value="Koramangala">Koramangala</option>
+      <option value="Electronic City">Electronic City</option>
+      <option value="Malleswaram">Malleswaram</option>
+      <option value="Banashankari">Banashankari</option>
+    </select>
+
+    <button type="submit">Search</button>
+  </form>
+
+  <script src="app.js"></script>
+</body>
+</html>

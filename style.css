@@ -1,0 +1,116 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Background image for the whole page */
+  background-size: cover;  /* Ensure the background covers the entire page */
+  background-position: auto; /* Center the background */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  text-align: center;
+}
+
+.header-container {
+  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent overlay for better text visibility */
+  color: white;
+  padding: 20px 0;
+}
+
+h1 {
+color: white;
+  font-size: 3em;
+}
+
+h2 {
+color: white;
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+label {
+  color: white; /* Change label text color to white */
+  font-size: 1.2em; /* Optional: Adjust label font size */
+  font-weight: bold; /* Optional: Make label text bold */
+  margin-right: 10px; /* Optional: Add some space between the label and the dropdown */
+}
+/* Form styling */
+form {
+  margin-top: 50px;
+}
+
+select {
+  width: 200px;
+  padding: 10px;
+  margin: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Map styling */
+#map {
+  width: 100%;
+  height: 400px;
+  margin-top: 50px;
+  background-color: #f0f0f0;  /* Fallback background color */
+  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Background image for the map section */
+  background-size: cover;
+  background-position: center;
+}
+
+/* For the buses page */
+#bus-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+#bus-list button {
+  padding: 15px 25px;
+  background-color: #f0f0f0;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 5px;
+  width: 200px;
+}
+
+#bus-list button:hover {
+  background-color: #ddd;
+}
+
+#bus-list button:active {
+  background-color: #bbb;
+}
+#search-again-btn {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-top: 20px; /* Ensure there's space between bus routes and the "Search Again" button */
+}
+
+#search-again-btn:hover {
+  background-color: #45a049; /* Hover effect */
+}

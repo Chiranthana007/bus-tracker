@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Routes</title>
+  <link rel="stylesheet" href="styles.css">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3Ky31jo5ifs2fs9fZqH5vD1IizEu4Yoc"></script>
+</head>
+<body>
+  <div id="bus-routes-container">
+    <h1 id="route-info">Bus Routes</h1>
+    <div id="bus-list"></div>
+  </div>
+
+  <div id="map"></div> <!-- Map to show random locations -->
+
+  <script>
+    // Get query parameters from URL (from and to locations)
+    function getQueryParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        fromLocation: urlParams.get('from'),
+        toLocation: urlParams.get('to')
+      };
+    }
+
+    // Display bus routes based on the selected locations
+    function displayBusRoutes() {
+      const { fromLocation, toLocation } = getQueryParams();
+      const busList = document.getElementById('bus-list');
+      const routeInfo = document.getElementById('route-info');
+
+      let buses = [];
+
+      // Define bus routes
+      if (fromLocation === "Kengeri" && toLocation === "Yelahanka") {
+        buses = ["401K", "401KB", "401M"];
+      } else if (fromLocation === "Yelahanka" && toLocation === "Kengeri") {
+        buses = ["401K", "401KB", "401M"];
+      } else {
+        routeInfo.textContent = "No buses available for this route";
+        return;
+      }
+
+      routeInfo.textContent = `${fromLocation} to ${toLocation} - Bus Routes:`;
+
+      // Display bus route buttons
+      buses.forEach(bus => {
+        const button = document.createElement('button');
+        button.textContent = bus;
+        button.onclick = function() {
+          showRandomLocations();
+        };
+        busList.appendChild(button);
+      });
+    }
+
+    // Initialize Google Map
+    let map;
+
+    function initMap() {
+      const mapOptions = {
+        zoom: 12,
+        center: { lat: 12.9716, lng: 77.5946 }, // Bangalore default coordinates
+      };
+      map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    }
+
+    // Show random locations on the map (representing bus route points)
+    function showRandomLocations() {
+      // Define some random locations along the route for demo purposes
+      const randomLocations = [
+        { lat: 12.9237, lng: 77.5004 }, // Kengeri area
+        { lat: 13.0800, lng: 77.6255 }, // Yelahanka area
+        { lat: 12.9376, lng: 77.5610 }, // Another random point
+        { lat: 12.9756, lng: 77.5794 }, // Another random point
+      ];
+
+      // Clear existing markers
+      map.clearOverlays();
+
+      // Create random markers
+      randomLocations.forEach(location => {
+        new google.maps.Marker({
+          position: location,
+          map: map,
+        });
+      });
+    }
+
+    // Call displayBusRoutes when the page is loaded
+    window.onload = displayBusRoutes;
+  </script>
+</body>
+</html>
