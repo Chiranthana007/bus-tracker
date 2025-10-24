@@ -7,36 +7,39 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Background image for the whole page */
-  background-size: cover;  /* Ensure the background covers the entire page */
-  background-position: auto; /* Center the background */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Full-page BG */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   text-align: center;
 }
 
 .header-container {
-  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent overlay for better text visibility */
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 20px 0;
+  margin-bottom: 20px;
 }
 
 h1 {
-color: white;
+  color: white;
   font-size: 3em;
+  letter-spacing: 2px;
 }
 
 h2 {
-color: white;
+  color: white;
   font-size: 1.5em;
   margin-top: 10px;
 }
+
 label {
-  color: white; /* Change label text color to white */
-  font-size: 1.2em; /* Optional: Adjust label font size */
-  font-weight: bold; /* Optional: Make label text bold */
-  margin-right: 10px; /* Optional: Add some space between the label and the dropdown */
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-right: 10px;
 }
-/* Form styling */
+
 form {
   margin-top: 50px;
 }
@@ -50,56 +53,8 @@ select {
   border: 1px solid #ddd;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-/* Map styling */
-#map {
-  width: 100%;
-  height: 400px;
-  margin-top: 50px;
-  background-color: #f0f0f0;  /* Fallback background color */
-  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Background image for the map section */
-  background-size: cover;
-  background-position: center;
-}
-
-/* For the buses page */
-#bus-list {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 30px;
-}
-
-#bus-list button {
-  padding: 15px 25px;
-  background-color: #f0f0f0;
-  border: none;
-  font-size: 1.2em;
-  cursor: pointer;
-  margin: 10px;
-  border-radius: 5px;
-  width: 200px;
-}
-
-#bus-list button:hover {
-  background-color: #ddd;
-}
-
-#bus-list button:active {
-  background-color: #bbb;
-}
+button,
+#bus-list button,
 #search-again-btn {
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -108,9 +63,79 @@ button:hover {
   border-radius: 5px;
   cursor: pointer;
   font-size: 1.2em;
-  margin-top: 20px; /* Ensure there's space between bus routes and the "Search Again" button */
+  margin: 10px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
 }
 
+button:hover,
+#bus-list button:hover,
 #search-again-btn:hover {
-  background-color: #45a049; /* Hover effect */
+  background-color: #45a049;
+}
+
+button:focus,
+select:focus,
+#bus-list button:focus {
+  outline: 2px solid #4CAF50;
+  box-shadow: 0 0 3px #4CAF50;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  margin-top: 30px;
+  background-color: #f0f0f0;
+  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Map fallback bg */
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  display: none;
+}
+
+#bus-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#bus-list button {
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 1.2em;
+  margin: 10px;
+  border-radius: 5px;
+  width: 200px;
+  border: 1px solid #ddd;
+  transition: background 0.2s;
+}
+
+#bus-list button:hover {
+  background-color: #ddd;
+  color: #222;
+}
+
+#bus-list button:active {
+  background-color: #bbb;
+}
+
+#search-again-btn {
+  margin-top: 20px;
+}
+
+footer {
+  margin-top: 40px;
+  color: #fff;
+  font-size: 1em;
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 2em; }
+  h2, label, button, select, #bus-list button { font-size: 1em; }
+  select, #bus-list button, button { width: 90%; }
+  #map { height: 250px; }
+  .header-container { padding: 10px 0; }
+  form { margin-top: 30px; }
 }
