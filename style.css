@@ -5,15 +5,35 @@
   box-sizing: border-box;
 }
 
+/* Background image for whole page */
 body {
   font-family: Arial, sans-serif;
-  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Full-page BG */
+  background-image: url('Ashok-Leyland-BMTC.jpg');
+  /* Option 1: Cover (default, fills screen, crops if needed) */
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
-  text-align: center;
+  min-height: 100vh;
 }
 
+/* Optional: Overlay for text readability */
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3); /* adjust intensity here */
+  pointer-events: none;
+}
+
+/* To try show image without cropping, switch to:
+body {
+  background-size: contain;
+  background-color: #222;     // fallback color for blank space
+}
+*/
+
+/* Rest of your styles */
 .header-container {
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
@@ -68,7 +88,6 @@ button,
   transition: background 0.2s, transform 0.1s;
 }
 
-/* Pop animation for bus buttons */
 .bus-btn,
 #bus-list button {
   transition: transform 0.12s;
@@ -96,9 +115,6 @@ select:focus,
   height: 400px;
   margin-top: 30px;
   background-color: #f0f0f0;
-  background-image: url('Ashok-Leyland-BMTC.jpg'); /* Map fallback bg */
-  background-size: cover;
-  background-position: center;
   border-radius: 8px;
   display: none;
 }
@@ -112,7 +128,6 @@ select:focus,
   justify-content: center;
 }
 
-/* Route stops section styling */
 #route-stops {
   background: rgba(255,255,255,0.96);
   box-shadow: 0 1px 8px rgba(0,0,0,0.12);
