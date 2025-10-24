@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bus Tracker</title>
   <link rel="stylesheet" href="style.css">
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3Ky31jo5ifs2fs9fZqH5vD1IizEu4Yoc"></script>
-
 </head>
 <body>
   <div class="header-container">
@@ -15,7 +13,7 @@
   </div>
 
   <!-- Form to select From and To locations -->
-  <form id="search-form" onsubmit="return redirectToBusesPage(event)">
+  <form id="search-form">
     <label for="from-location">From Location</label>
     <select id="from-location" name="from-location" required>
       <option value="" disabled selected>Search...</option>
@@ -41,6 +39,17 @@
     <button type="submit">Search</button>
   </form>
 
-  <script src="app.js"></script>
+  <!-- Link your main JS logic -->
+  <script>
+    // Handle form submit: Redirect to buses.html with selected params
+    document.getElementById('search-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const from = document.getElementById('from-location').value;
+      const to = document.getElementById('to-location').value;
+      if (from && to && from !== to) {
+        window.location.href = `buses.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+      }
+    });
+  </script>
 </body>
 </html>
