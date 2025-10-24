@@ -65,6 +65,17 @@ button,
   font-size: 1.2em;
   margin: 10px;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s, transform 0.1s;
+}
+
+/* Pop animation for bus buttons */
+.bus-btn,
+#bus-list button {
+  transition: transform 0.12s;
+}
+.bus-btn:active,
+#bus-list button:active {
+  transform: scale(0.94);
 }
 
 button:hover,
@@ -101,6 +112,18 @@ select:focus,
   justify-content: center;
 }
 
+/* Route stops section styling */
+#route-stops {
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.12);
+  border-radius: 6px;
+  padding: 15px 10px;
+  margin: 15px auto 0 auto;
+  width: 92%;
+  max-width: 350px;
+  color: #222;
+}
+
 #bus-list button {
   background-color: #f0f0f0;
   color: #333;
@@ -131,6 +154,7 @@ footer {
   font-size: 1em;
 }
 
+/* Mobile-responsive tweaks */
 @media (max-width: 600px) {
   h1 { font-size: 2em; }
   h2, label, button, select, #bus-list button { font-size: 1em; }
@@ -138,4 +162,5 @@ footer {
   #map { height: 250px; }
   .header-container { padding: 10px 0; }
   form { margin-top: 30px; }
+  #route-stops { max-width: 98%; }
 }
