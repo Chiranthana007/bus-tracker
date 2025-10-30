@@ -9,7 +9,119 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <style>
-    #map { width: 100%; height: 400px; margin-top: 30px; border-radius: 8px; display: none;}
+    #bus-list {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 25px 0;
+      gap: 18px;
+    }
+    .bus-btn,
+    #bus-list button {
+      background-color: #fff;
+      color: #4CAF50;
+      border: 2px solid #4CAF50;
+      box-shadow: 0 2px 12px rgba(76,175,80,0.10);
+      font-weight: bold;
+      font-size: 1.18em;
+      border-radius: 18px;
+      padding: 14px 24px;
+      margin: 0 8px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.12s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .bus-btn:hover,
+    #bus-list button:hover {
+      background-color: #4CAF50;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(76,175,80,0.18);
+      transform: scale(1.05);
+    }
+    .bus-btn:active,
+    #bus-list button:active {
+      transform: scale(0.97);
+    }
+    .bus-btn .ripple,
+    #bus-list button .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      transform: scale(0);
+      animation: ripple-effect 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes ripple-effect {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    #map {
+      width: 100%;
+      height: 400px;
+      margin-top: 30px;
+      border-radius: 8px;
+      display: none;
+    }
+    #route-stops {
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 3px 24px rgba(60,80,120,0.17);
+      border-radius: 15px;
+      padding: 22px 30px;
+      margin: 24px auto 0 auto;
+      width: 92%;
+      max-width: 350px;
+      color: #333;
+      font-size: 1.07em;
+      outline: 2px solid #eee;
+      transition: box-shadow 0.22s;
+    }
+    #route-stops h3 {
+      margin-bottom: 12px;
+      color: #219150;
+      font-size: 1.13em;
+      letter-spacing: 1px;
+    }
+    .stop-interactive {
+      padding: 7px 16px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.14s, color 0.14s;
+    }
+    .stop-interactive:hover {
+      background: #e6f9ec;
+      color: #26a857;
+      font-weight: bold;
+    }
+    .stop-interactive.active {
+      background: #43cd7b;
+      color: #fff;
+      font-weight: bold;
+    }
+    #search-again-btn {
+      margin-top: 12px;
+      padding: 8px 20px;
+      background: #4CAF50;
+      color: #fff;
+      border-radius: 12px;
+      font-size: 1em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s;
+    }
+    #search-again-btn:hover {
+      background: #219150;
+      box-shadow: 0 1px 7px #21915044;
+    }
+    @media (max-width: 750px) {
+      #route-stops { padding: 10px 7px; max-width: 98%; }
+      .bus-btn, #bus-list button { font-size: 1em; padding: 10px 14px;}
+      #map { height: 280px; }
+    }
   </style>
 </head>
 <body>
@@ -43,7 +155,7 @@
           [13.1035, 77.5762],
         ],
       },
-      // add other routes as you want, in [lat, lng] format
+      // add other routes as needed
     ];
 
     function getQueryParams() {
@@ -72,12 +184,13 @@
 
       routeInfo.textContent = `${fromLocation} to ${toLocation} - Bus Routes:`;
       busList.innerHTML = "";
+
+      // Centered, animated bus number buttons
       route.buses.forEach(bus => {
         const button = document.createElement('button');
         button.textContent = bus;
         button.className = 'bus-btn';
         button.style.position = 'relative';
-        // ripple effect
         button.addEventListener('click', function(e) {
           const ripple = document.createElement('span');
           ripple.className = 'ripple';
@@ -111,13 +224,12 @@
         }).addTo(map);
       } else {
         map.setView(coordinates[0], 12);
-        // Remove old line and markers if exist
         routeLine && map.removeLayer(routeLine);
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
       }
 
-      // Draw route as polyline
+      // Draw route polyline
       routeLine = L.polyline(coordinates, {
         color: "#4CAF50",
         weight: 4,
@@ -125,59 +237,35 @@
       }).addTo(map);
 
       // Add markers for stops
-      coordinates.forEach((coord, idx) => {
-        const marker = L.marker(coord)
-          .bindPopup(`Stop ${idx+1}`)
+      markers = coordinates.map((coord, idx) => {
+        let marker = L.marker(coord)
+          .bindPopup(`Stop ${idx+1}: [${coord[0].toFixed(4)}, ${coord[1].toFixed(4)}]`)
           .addTo(map);
-        markers.push(marker);
+        return marker;
       });
 
-      // Show route stops under map
+      // Interactive stops CARD
       const stopsDiv = document.getElementById("route-stops");
       stopsDiv.style.display = "block";
       stopsDiv.innerHTML = `<h3>Route Stops:</h3>` +
         coordinates.map((coord, idx) =>
-          `<div>Stop ${idx + 1}: [${coord[0].toFixed(4)}, ${coord[1].toFixed(4)}]</div>`
+          `<div class="stop-interactive" data-stop="${idx}">
+            Stop ${idx + 1}: [${coord[0].toFixed(4)}, ${coord[1].toFixed(4)}]
+          </div>`
         ).join("");
+
+      // Add click for each stop: highlight, center, open popup
+      document.querySelectorAll('.stop-interactive').forEach((elem, idx) => {
+        elem.onclick = function() {
+          document.querySelectorAll('.stop-interactive').forEach(e => e.classList.remove('active'));
+          elem.classList.add('active');
+          map.setView(coordinates[idx], 14);
+          markers[idx].openPopup();
+        };
+      });
     }
 
     window.onload = displayBusRoutes;
   </script>
-  <!-- ripple effect styles -->
-  <style>
-    .bus-btn,
-    #bus-list button {
-      transition: transform 0.14s, background 0.2s, box-shadow 0.19s;
-      border-radius: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-    .bus-btn:hover,
-    #bus-list button:hover {
-      background-color: #70db70;
-      box-shadow: 0 0 8px #4CAF50;
-      color: #fff;
-    }
-    .bus-btn:active,
-    #bus-list button:active {
-      transform: scale(0.94);
-    }
-    .bus-btn .ripple,
-    #bus-list button .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.45);
-      transform: scale(0);
-      animation: ripple-effect 0.6s linear;
-      pointer-events: none;
-    }
-    @keyframes ripple-effect {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-    #map { border-radius: 8px;}
-  </style>
 </body>
 </html>
