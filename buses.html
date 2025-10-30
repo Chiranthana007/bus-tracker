@@ -1,140 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bus Routes</title>
-  <link rel="stylesheet" href="styles.css">
-  <!-- Google Maps JS API -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3Ky31jo5ifs2fs9fZqH5vD1IizEu4Yoc"></script>
-</head>
-<body>
-  <div id="bus-routes-container">
-    <h1 id="route-info">Bus Routes</h1>
-    <div id="bus-list"></div>
-    <button id="search-again-btn" style="display:none;">Search Again</button>
-  </div>
+let map;
+let markers = [];
 
-  <div id="map" style="display:none;"></div>
+// This matches your route objects in app.js/index.html!
+const routes = [
+  {
+    from: 'Kengeri',
+    to: 'Yelahanka',
+    buses: ['401K', '401KB', '401M'],
+    routeCoordinates: [
+      { lat: 12.9236, lng: 77.4987 },
+      { lat: 12.9300, lng: 77.5100 },
+      { lat: 12.9400, lng: 77.5200 },
+      { lat: 12.9450, lng: 77.5300 },
+      { lat: 12.9539, lng: 77.6309 },
+      { lat: 12.9600, lng: 77.5800 },
+      { lat: 12.9700, lng: 77.5600 },
+      { lat: 13.0035, lng: 77.5800 },
+      { lat: 13.1035, lng: 77.5762 },
+    ],
+  },
+  // Add your other routes the same way
+];
 
-  <script>
-    // ===== Store Markers Globally So We Can Clear Them =====
-    let map;
-    let markers = [];
+// Get URL params
+function getQueryParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return {
+    fromLocation: urlParams.get('from'),
+    toLocation: urlParams.get('to'),
+  };
+}
 
-    // Bus route logic — exactly match your app.js routes for sync
-    const routes = [
-      {
-        from: 'Kengeri',
-        to: 'Yelahanka',
-        buses: ['401K', '401KB', '401M'],
-        routeCoordinates: [
-          { lat: 12.9236, lng: 77.4987 },
-          { lat: 12.9300, lng: 77.5100 },
-          { lat: 12.9400, lng: 77.5200 },
-          { lat: 12.9450, lng: 77.5300 },
-          { lat: 12.9539, lng: 77.6309 },
-          { lat: 12.9600, lng: 77.5800 },
-          { lat: 12.9700, lng: 77.5600 },
-          { lat: 13.0035, lng: 77.5800 },
-          { lat: 13.1035, lng: 77.5762 },
-        ],
-      },
-      // Add other routes here for completeness!
-    ];
+function initMap(center) {
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 12,
+    center: center,
+  });
+}
 
-    // ===== Helper: Get URL Params =====
-    function getQueryParams() {
-      const urlParams = new URLSearchParams(window.location.search);
-      return {
-        fromLocation: urlParams.get('from'),
-        toLocation: urlParams.get('to'),
-      };
-    }
+function displayBusRoutes() {
+  const { fromLocation, toLocation } = getQueryParams();
+  const busList = document.getElementById('bus-list');
+  const routeInfo = document.getElementById('route-info');
+  const searchBtn = document.getElementById('search-again-btn');
 
-    // ===== Initialize Google Map =====
-    function initMap(center) {
-      map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: center,
-      });
-    }
+  let route =
+    routes.find(r => r.from === fromLocation && r.to === toLocation) ||
+    routes.find(r => r.from === toLocation && r.to === fromLocation);
 
-    // ===== Display Bus Routes with Buttons =====
-    function displayBusRoutes() {
-      const { fromLocation, toLocation } = getQueryParams();
-      const busList = document.getElementById('bus-list');
-      const routeInfo = document.getElementById('route-info');
-      const searchBtn = document.getElementById('search-again-btn');
+  if (!route) {
+    routeInfo.textContent = "No buses available for this route";
+    searchBtn.style.display = "block";
+    return;
+  }
 
-      // Find matching route (both directions)
-      let route =
-        routes.find(r => r.from === fromLocation && r.to === toLocation) ||
-        routes.find(r => r.from === toLocation && r.to === fromLocation);
+  routeInfo.textContent = `${fromLocation} to ${toLocation} - Bus Routes:`;
+  busList.innerHTML = "";
 
-      if (!route) {
-        routeInfo.textContent = "No buses available for this route";
-        searchBtn.style.display = "block";
-        return;
-      }
+  // Create bus buttons
+  route.buses.forEach(bus => {
+    const button = document.createElement('button');
+    button.textContent = bus;
+    button.className = 'bus-btn';
+    button.onclick = function () {
+      showRouteOnMap(route.routeCoordinates);
+    };
+    busList.appendChild(button);
+  });
 
-      routeInfo.textContent = `${fromLocation} to ${toLocation} - Bus Routes:`;
-      busList.innerHTML = "";
+  // Show "Search Again" button
+  searchBtn.style.display = "block";
+  searchBtn.onclick = () => {
+    window.location.href = "index.html";
+  };
+}
 
-      // Create buttons for each bus
-      route.buses.forEach(bus => {
-        const button = document.createElement('button');
-        button.textContent = bus;
-        button.onclick = function () {
-          showRouteOnMap(route.routeCoordinates);
-        };
-        busList.appendChild(button);
-      });
+function showRouteOnMap(coordinates) {
+  if (!map) initMap(coordinates[0]);
+  document.getElementById("map").style.display = "block";
 
-      // Show "Search Again" button once a route is found
-      searchBtn.style.display = "block";
-      searchBtn.onclick = () => {
-        window.location.href = "index.html"; // Or your homepage name
-      };
-    }
+  // Clear previous markers
+  markers.forEach(marker => marker.setMap(null));
+  markers = [];
 
-    // ===== Show Bus Route (Markers + Polyline) on Map =====
-    function showRouteOnMap(coordinates) {
-      // If first time, create map
-      if (!map) initMap(coordinates[0]);
+  // Add markers
+  coordinates.forEach(coord => {
+    const marker = new google.maps.Marker({
+      position: coord,
+      map: map,
+    });
+    markers.push(marker);
+  });
 
-      // Clear old markers
-      markers.forEach(marker => marker.setMap(null));
-      markers = [];
+  // Draw polyline
+  const busRouteLine = new google.maps.Polyline({
+    path: coordinates,
+    geodesic: true,
+    strokeColor: "#4CAF50",
+    strokeOpacity: 0.9,
+    strokeWeight: 4,
+    map: map,
+  });
 
-      // Make sure map is visible
-      document.getElementById("map").style.display = "block";
+  map.setCenter(coordinates[0]);
 
-      // Add markers for all points on the route
-      coordinates.forEach(coord => {
-        const marker = new google.maps.Marker({
-          position: coord,
-          map: map,
-        });
-        markers.push(marker);
-      });
+  // Show route stops below map
+  const stopsDiv = document.getElementById("route-stops");
+  stopsDiv.style.display = "block";
+  stopsDiv.innerHTML = "<h3>Route Stops:</h3>" +
+    coordinates.map((coord, idx) => `<div>Stop ${idx + 1}: [${coord.lat.toFixed(4)}, ${coord.lng.toFixed(4)}]</div>`).join("");
+}
 
-      // Draw polyline for the whole route (looks pro)
-      const busRouteLine = new google.maps.Polyline({
-        path: coordinates,
-        geodesic: true,
-        strokeColor: "#4CAF50",
-        strokeOpacity: 0.9,
-        strokeWeight: 4,
-        map: map,
-      });
-
-      // Center map on the first location
-      map.setCenter(coordinates[0]);
-    }
-
-    // Call when page loads
-    window.onload = displayBusRoutes;
-  </script>
-</body>
-</html>
+// Load results on page load
+window.onload = displayBusRoutes;
