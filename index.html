@@ -5,14 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bus Tracker</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    #liveTime {
+      font-size: 1.07em;
+      color: #1c6c3f;
+      margin-bottom: 10px;
+      margin-top: 8px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .popular-routes-section {
+      margin: 28px 0 25px 0;
+    }
+    .popular-routes-label {
+      font-size: 1.08em;
+      margin-bottom: 10px;
+      color: #17703f;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .popular-routes-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .route-badge {
+      background: #26bd6b;
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: 16px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #21915033;
+      transition: background 0.17s, transform 0.14s;
+      border: none;
+      outline: none;
+    }
+    .route-badge:hover {
+      background: #17703f;
+      transform: scale(1.08);
+    }
+    .contributors-section {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 8px #21915033;
+      width: 88%;
+      max-width: 350px;
+      margin: 24px auto;
+      padding: 18px 25px;
+      color: #333;
+      font-size: 1em;
+      text-align: center;
+    }
+    .contributors-title {
+      color: #219150;
+      font-size: 1.06em;
+      letter-spacing: 1px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .contributors-list {
+      margin-top: 9px;
+      font-size: 0.98em;
+    }
+  </style>
 </head>
 <body>
   <div class="header-container">
     <h1>Bus Tracker</h1>
     <h2>Search for buses</h2>
+    <!-- Live Time/Date Display -->
+    <div id="liveTime"></div>
   </div>
 
-  <!-- Form to select From and To locations -->
+  <!-- Popular routes -->
+  <div class="popular-routes-section">
+    <div class="popular-routes-label">Popular Routes</div>
+    <div class="popular-routes-list" id="popularRoutes">
+      <!-- routes added from JS -->
+    </div>
+  </div>
+
+  <!-- Standard Form -->
   <form id="search-form">
     <label for="from-location">From Location</label>
     <select id="from-location" name="from-location" required>
@@ -39,9 +116,49 @@
     <button type="submit">Search</button>
   </form>
 
-  <!-- Link your main JS logic -->
+  <!-- Contributors Section -->
+  <div class="contributors-section">
+    <div class="contributors-title">Contributors</div>
+    <div class="contributors-list">
+      <div>Chiranthana S (Owner/Dev)</div>
+      <div>You can add more contributors!</div>
+      <div><a href="https://github.com/chiranthana007" style="color:#17703f; text-decoration:none;">GitHub</a></div>
+    </div>
+  </div>
+
   <script>
-    // Handle form submit: Redirect to buses.html with selected params
+    // Live Time/Date
+    function updateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      document.getElementById('liveTime').textContent = now.toLocaleDateString('en-IN', options);
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Popular Routes Configuration
+    const popularRoutes = [
+      { from: "Kengeri", to: "Yelahanka" },
+      { from: "Koramangala", to: "Electronic City" },
+      { from: "Banashankari", to: "Malleswaram" },
+    ];
+
+    // Render Popular Routes as clickable badges
+    const routesDiv = document.getElementById('popularRoutes');
+    popularRoutes.forEach(route => {
+      const badge = document.createElement('button');
+      badge.className = 'route-badge';
+      badge.textContent = `${route.from} → ${route.to}`;
+      badge.onclick = function() {
+        document.getElementById('from-location').value = route.from;
+        document.getElementById('to-location').value = route.to;
+        // Optionally, trigger form submit
+        // document.getElementById('search-form').dispatchEvent(new Event('submit'));
+      };
+      routesDiv.appendChild(badge);
+    });
+
+    // Handle normal search form submit
     document.getElementById('search-form').addEventListener('submit', function(event) {
       event.preventDefault();
       const from = document.getElementById('from-location').value;
