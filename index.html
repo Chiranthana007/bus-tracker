@@ -123,45 +123,76 @@
       background: #17703f;
       transform: scale(1.08);
     }
-    /* Quick Access */
-    .quick-access-section {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px #21915010;
-      width: 90%;
-      max-width: 380px;
-      margin: 22px auto 0 auto;
-      padding: 18px 22px 17px 22px;
-      text-align: center;
-    }
-    .quick-access-title {
-      color: #189058;
-      font-size: 1.13em;
-      font-weight: bold;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-    .quick-access-links {
+    /* Hamburger Quick Access */
+    .quick-access-menu {
+      position: fixed;
+      top: 28px;
+      right: 22px;
+      z-index: 35;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      align-items: flex-end;
+    }
+    .hamburger-btn {
+      width: 46px;
+      height: 46px;
+      border: none;
+      background: #17b56acc;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #17b56a44;
+      transition: background 0.18s;
+      margin-bottom: 4px;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 26px;
+      height: 4px;
+      margin: 3px 0;
+      background: #fff;
+      border-radius: 4px;
+      transition: 0.23s;
+    }
+    .hamburger-btn:hover { background: #113f29; }
+    .quick-access-drawer {
+      display: none;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-top: 12px;
+      box-shadow: 0 6px 24px #17b56a17;
+      background: #fff;
+      padding: 11px 20px 14px 20px;
+      border-radius: 14px;
+      min-width: 155px;
+    }
+    .quick-access-drawer.open {
+      display: flex;
+      animation: slide-in 0.27s cubic-bezier(.92,-0.09,.15,1.14);
+    }
+    @keyframes slide-in {
+      from { transform: translateY(-28px) scale(0.97); opacity: 0.06;}
+      to { transform: translateY(0) scale(1); opacity: 1;}
     }
     .quick-access-link {
-      background: #e6f7ef;
+      display: block;
+      background: none;
       color: #07934d;
       font-weight: 500;
       text-decoration: none;
-      padding: 10px 0;
-      width: 85%;
-      border-radius: 10px;
-      font-size: 1.09em;
-      box-shadow: 0 1px 6px #07934d18;
-      transition: background 0.17s, color 0.17s;
+      padding: 11px 0 7px 0;
+      border-radius: 8px;
+      font-size: 1.06em;
+      width: 100%;
+      text-align: right;
+      transition: color 0.16s, background 0.12s;
     }
     .quick-access-link:hover {
-      background: #17b56a;
       color: #fff;
+      background: #17b56a;
     }
     /* Contributors */
     .contributors-section {
@@ -191,8 +222,7 @@
       h1 { font-size: 2em; }
       h2, label, button, select { font-size: 1em; }
       select, button { width: 90%; }
-      .contributors-section,
-      .quick-access-section { padding: 10px 6px; max-width: 95%; }
+      .contributors-section { padding: 10px 6px; max-width: 95%; }
     }
   </style>
 </head>
@@ -202,7 +232,7 @@
     <h2>Search for buses</h2>
     <div id="liveTime"></div>
   </div>
-  
+
   <!-- Search Form -->
   <form id="search-form">
     <label for="from-location">From Location</label>
@@ -227,7 +257,7 @@
     </select>
     <button type="submit">Search</button>
   </form>
-  
+
   <!-- Popular routes section BELOW search button -->
   <div class="popular-routes-section">
     <div class="popular-routes-label">Popular Routes</div>
@@ -236,10 +266,14 @@
     </div>
   </div>
 
-  <!-- Quick Access Section -->
-  <div class="quick-access-section">
-    <div class="quick-access-title">Quick Access</div>
-    <div class="quick-access-links">
+  <!-- Hamburger Quick Access -->
+  <div id="quickAccessMenu" class="quick-access-menu">
+    <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open quick access">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div id="quickAccessDrawer" class="quick-access-drawer">
       <a href="support.html" class="quick-access-link">🛠️ Support</a>
       <a href="faq.html" class="quick-access-link">❓ FAQ</a>
       <a href="history.html" class="quick-access-link">📄 Booking History</a>
@@ -293,6 +327,19 @@
       const to = document.getElementById('to-location').value;
       if (from && to && from !== to) {
         window.location.href = `buses.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+      }
+    });
+
+    // Hamburger menu toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const quickAccessDrawer = document.getElementById('quickAccessDrawer');
+    hamburgerBtn.onclick = function () {
+      quickAccessDrawer.classList.toggle('open');
+    };
+    // Optionally, close drawer on outside click
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('quickAccessMenu').contains(e.target)) {
+        quickAccessDrawer.classList.remove('open');
       }
     });
   </script>
