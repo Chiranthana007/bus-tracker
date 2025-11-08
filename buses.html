@@ -29,22 +29,32 @@
       letter-spacing: 1px;
     }
     .stop-interactive {
-      padding: 7px 16px;
-      margin-bottom: 4px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.14s, color 0.14s;
-    }
-    .stop-interactive:hover {
-      background: #e6f9ec;
-      color: #26a857;
-      font-weight: bold;
-    }
-    .stop-interactive.active {
-      background: #43cd7b;
-      color: #fff;
-      font-weight: bold;
-    }
+  font-family: 'Segoe UI', 'Arial', sans-serif;  /* Modern and readable */
+  font-size: 1.08em;
+  color: #184c28;
+  background: #f7fff7;
+  padding: 8px 18px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  border: 1px solid #e3eee3;
+  box-shadow: 0 1px 3px #21915009;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s, font-weight 0.18s;
+}
+
+.stop-interactive:hover {
+  background: #c4ecc7;
+  color: #206a39;
+  font-weight: bold;
+}
+
+.stop-interactive.active {
+  background: #43cd7b;
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #43cd7b;
+}
+
   </style>
 </head>
 <body>
@@ -107,7 +117,7 @@
       {
         from: 'Koramangala',
         to: 'Electronic City',
-        buses: ['340E', '356C'],
+        buses: ['356-CB', '356CK'],
         routeCoordinates: [
           [12.935059,77.615593],   // Koramangala TTMC
           [12.936959,77.617164],   // Koramangala Kalyana Mantapa
@@ -152,7 +162,7 @@
       {
         from: 'Banashankari',
         to: 'Malleswaram',
-        buses: ['45E', '176', '96A'],
+        buses: ['401-N'],
         routeCoordinates: [
           [12.9186, 77.5732],     // Banashankari
           [12.9224, 77.5735],     // Hunase Mara
@@ -331,3 +341,4 @@
   </script>
 </body>
 </html>
+
