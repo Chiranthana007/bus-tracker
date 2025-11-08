@@ -189,11 +189,63 @@
       width: 100%;
       text-align: right;
       transition: color 0.16s, background 0.12s;
+      cursor: pointer;
     }
     .quick-access-link:hover {
       color: #fff;
       background: #17b56a;
     }
+    /* Popup/Modal */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      z-index: 55;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(40,80,80,0.18);
+    }
+    .popup-content {
+      display: none;
+      position: fixed;
+      z-index: 60;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background: #fff;
+      border-radius: 14px;
+      padding: 23px 25px 18px 25px;
+      min-width: 275px;
+      max-width: 97vw;
+      box-shadow: 0 6px 35px #07934d38;
+      font-size: 1.08em;
+    }
+    .popup-content h3 {
+      color: #189058;
+      margin-top: 0;
+    }
+    .popup-content .close-btn {
+      background: #eee;
+      color: #446;
+      border: none;
+      border-radius: 8px;
+      padding: 2px 14px;
+      font-size: 1.06em;
+      float: right;
+      cursor: pointer;
+      margin-top: -10px;
+      margin-right: -8px;
+    }
+    .popup-content ul, .popup-content table { margin-top: 13px; }
+    .popup-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .popup-content th, .popup-content td {
+      border: 1px solid #e0e0e0;
+      padding: 5px 7px;
+      text-align: center;
+    }
+    .popup-content th { background: #e7fbe7; color: #1d8144;}
     /* Contributors */
     .contributors-section {
       background: #fff;
@@ -222,7 +274,7 @@
       h1 { font-size: 2em; }
       h2, label, button, select { font-size: 1em; }
       select, button { width: 90%; }
-      .contributors-section { padding: 10px 6px; max-width: 95%; }
+      .contributors-section, .popup-content { padding: 10px 6px; max-width: 95%; }
     }
   </style>
 </head>
@@ -274,18 +326,26 @@
       <span></span>
     </button>
     <div id="quickAccessDrawer" class="quick-access-drawer">
-      <a href="support.html" class="quick-access-link">🛠️ Support</a>
-      <a href="faq.html" class="quick-access-link">❓ FAQ</a>
-      <a href="history.html" class="quick-access-link">📄 Booking History</a>
+      <a href="#" class="quick-access-link" id="showHistory">📄 Booking History</a>
+      <a href="#" class="quick-access-link" id="showFaq">❓ FAQ</a>
+      <a href="#" class="quick-access-link" id="showSupport">🛠️ Support</a>
     </div>
   </div>
+
+  <!-- Popups for content -->
+  <div id="popupOverlay" class="popup-overlay"></div>
+  <div id="popupContent" class="popup-content"></div>
 
   <!-- Contributors Section -->
   <div class="contributors-section">
     <div class="contributors-title">Contributors</div>
     <div class="contributors-list">
-      <div>Chiranthana S (Owner/Dev)</div>
-      <div>You can add more contributors!</div>
+      <div>Chiranthana S P</div>
+      <div>Swaroop</div>
+      <div>D N Jaishree</div>
+      <div>Chittara D</div>
+      <div>Jagan Mohan</div>
+      <div>Chiranth G H</div>
       <div><a href="https://github.com/chiranthana007" style="color:#17703f; text-decoration:none;">GitHub</a></div>
     </div>
   </div>
@@ -336,12 +396,67 @@
     hamburgerBtn.onclick = function () {
       quickAccessDrawer.classList.toggle('open');
     };
-    // Optionally, close drawer on outside click
     document.addEventListener('click', function(e) {
       if (!document.getElementById('quickAccessMenu').contains(e.target)) {
         quickAccessDrawer.classList.remove('open');
       }
     });
+
+    // Popup Logic
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupContent = document.getElementById('popupContent');
+
+    function openPopup(html) {
+      popupContent.innerHTML = '<button class="close-btn" onclick="closePopup()">✖</button>' + html;
+      popupOverlay.style.display = 'block';
+      popupContent.style.display = 'block';
+    }
+    window.closePopup = function() {
+      popupContent.style.display = 'none';
+      popupOverlay.style.display = 'none';
+    };
+    popupOverlay.onclick = closePopup;
+
+    // Booking History
+    document.getElementById('showHistory').onclick = function(e) {
+      e.preventDefault();
+      openPopup(`
+        <h3>Booking History</h3>
+        <table>
+          <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
+          <tr><td>2025-10-28</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
+          <tr><td>2025-10-29</td><td>Koramangala</td><td>Electronic City</td><td>340E</td></tr>
+          <tr><td>2025-10-30</td><td>Banashankari</td><td>Malleswaram</td><td>176</td></tr>
+        </table>
+      `);
+      quickAccessDrawer.classList.remove('open');
+    };
+
+    // FAQ
+    document.getElementById('showFaq').onclick = function(e) {
+      e.preventDefault();
+      openPopup(`
+        <h3>Frequently Asked Questions</h3>
+        <ul>
+          <li><b>Q:</b> How do I search for a route?<br><b>A:</b> Use the dropdowns on the homepage and click Search.</li>
+          <li><b>Q:</b> How do I see the map?<br><b>A:</b> Select a bus on the results page to see its map and route stops.</li>
+          <li><b>Q:</b> Can I book tickets here?<br><b>A:</b> This is a demo—no live booking yet!</li>
+          <li><b>Q:</b> Can I access from my phone?<br><b>A:</b> Yes, it is mobile-friendly!</li>
+        </ul>
+      `);
+      quickAccessDrawer.classList.remove('open');
+    };
+
+    // Support
+    document.getElementById('showSupport').onclick = function(e) {
+      e.preventDefault();
+      openPopup(`
+        <h3>Support</h3>
+        <div style="margin-bottom:10px;">For help, suggestions, or bug reports, mail:</div>
+        <a href="mailto:chiru@example.com" style="color:#179150;font-weight:bold;">chiru@example.com</a>
+      `);
+      quickAccessDrawer.classList.remove('open');
+    };
   </script>
 </body>
 </html>
