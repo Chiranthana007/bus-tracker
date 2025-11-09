@@ -22,10 +22,110 @@
       padding: 32px 0 18px 0;
       margin-bottom: 20px;
       text-align: center;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+    }
+    /* Logo (optional) */
+    .site-logo {
+      position: absolute;
+      top: 18px;
+      left: 72px;
+      z-index: 51;
+    }
+    .site-logo img {
+      height: 54px;
+      width: auto;
+      border-radius: 11px;
+      box-shadow: 0 2px 9px #094d3040;
+      background: #fff;
+      padding: 3px 9px;
+    }
+    @media (max-width: 560px) {
+      .site-logo { left: 54px; }
+      .site-logo img { height: 38px; padding: 2px 5px; }
+    }
+    /* Hamburger Menu inside header, left */
+    .hamburger-menu-header {
+      position: absolute;
+      top: 16px;
+      left: 19px;
+      z-index: 55;
+    }
+    .hamburger-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: #17b56acc;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #17b56a44;
+      transition: background 0.18s;
+      margin-bottom: 4px;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 22px;
+      height: 3.5px;
+      margin: 3px 0;
+      background: #fff;
+      border-radius: 3px;
+      transition: 0.19s;
+    }
+    .hamburger-btn:hover { background: #113f29; }
+    .quick-access-drawer {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 10px;
+      background: #fff;
+      box-shadow: 0 6px 24px #17b56a17;
+      border-radius: 12px;
+      min-width: 140px;
+      padding: 10px 13px;
+      position: absolute;
+      top: 42px;
+      left: 0;
+    }
+    .quick-access-drawer.open {
+      display: flex;
+      animation: slide-in-left 0.24s cubic-bezier(.92,-0.09,.15,1.14);
+    }
+    @keyframes slide-in-left {
+      from { transform: translateX(-28px) scale(0.97); opacity: 0.08;}
+      to { transform: translateX(0) scale(1); opacity: 1;}
+    }
+    .quick-access-link {
+      display: block;
+      background: none;
+      color: #07934d;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 9px 0 7px 0;
+      border-radius: 7px;
+      font-size: 1.05em;
+      width: 100%;
+      text-align: left;
+      transition: color 0.14s, background 0.10s;
+      cursor: pointer;
+    }
+    .quick-access-link:hover {
+      color: #fff;
+      background: #17b56a;
+    }
+    @media (max-width: 750px) {
+      .hamburger-menu-header { top: 10px !important; left: 10px !important; }
+      .quick-access-drawer {
+        min-width: 112px;
+        padding: 8px 7px;
+        font-size: 0.93em;
+      }
     }
     h1 {
       color: white;
@@ -86,7 +186,6 @@
       background-color: #45a049;
       transform: scale(1.03);
     }
-    /* Popular Routes */
     .popular-routes-section {
       margin: 18px 0 15px 0;
       text-align: center;
@@ -123,130 +222,6 @@
       background: #17703f;
       transform: scale(1.08);
     }
-    /* Hamburger Quick Access */
-    .quick-access-menu {
-      position: fixed;
-      top: 28px;
-      right: 22px;
-      z-index: 35;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    .hamburger-btn {
-      width: 46px;
-      height: 46px;
-      border: none;
-      background: #17b56acc;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 2px 12px #17b56a44;
-      transition: background 0.18s;
-      margin-bottom: 4px;
-    }
-    .hamburger-btn span {
-      display: block;
-      width: 26px;
-      height: 4px;
-      margin: 3px 0;
-      background: #fff;
-      border-radius: 4px;
-      transition: 0.23s;
-    }
-    .hamburger-btn:hover { background: #113f29; }
-    .quick-access-drawer {
-      display: none;
-      flex-direction: column;
-      align-items: flex-end;
-      margin-top: 12px;
-      box-shadow: 0 6px 24px #17b56a17;
-      background: #fff;
-      padding: 11px 20px 14px 20px;
-      border-radius: 14px;
-      min-width: 155px;
-    }
-    .quick-access-drawer.open {
-      display: flex;
-      animation: slide-in 0.27s cubic-bezier(.92,-0.09,.15,1.14);
-    }
-    @keyframes slide-in {
-      from { transform: translateY(-28px) scale(0.97); opacity: 0.06;}
-      to { transform: translateY(0) scale(1); opacity: 1;}
-    }
-    .quick-access-link {
-      display: block;
-      background: none;
-      color: #07934d;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 11px 0 7px 0;
-      border-radius: 8px;
-      font-size: 1.06em;
-      width: 100%;
-      text-align: right;
-      transition: color 0.16s, background 0.12s;
-      cursor: pointer;
-    }
-    .quick-access-link:hover {
-      color: #fff;
-      background: #17b56a;
-    }
-    /* Popup/Modal */
-    .popup-overlay {
-      display: none;
-      position: fixed;
-      z-index: 55;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(40,80,80,0.18);
-    }
-    .popup-content {
-      display: none;
-      position: fixed;
-      z-index: 60;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-      background: #fff;
-      border-radius: 14px;
-      padding: 23px 25px 18px 25px;
-      min-width: 275px;
-      max-width: 97vw;
-      box-shadow: 0 6px 35px #07934d38;
-      font-size: 1.08em;
-    }
-    .popup-content h3 {
-      color: #189058;
-      margin-top: 0;
-    }
-    .popup-content .close-btn {
-      background: #eee;
-      color: #446;
-      border: none;
-      border-radius: 8px;
-      padding: 2px 14px;
-      font-size: 1.06em;
-      float: right;
-      cursor: pointer;
-      margin-top: -10px;
-      margin-right: -8px;
-    }
-    .popup-content ul, .popup-content table { margin-top: 13px; }
-    .popup-content table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    .popup-content th, .popup-content td {
-      border: 1px solid #e0e0e0;
-      padding: 5px 7px;
-      text-align: center;
-    }
-    .popup-content th { background: #e7fbe7; color: #1d8144;}
-    /* Contributors */
     .contributors-section {
       background: #fff;
       border-radius: 10px;
@@ -274,17 +249,37 @@
       h1 { font-size: 2em; }
       h2, label, button, select { font-size: 1em; }
       select, button { width: 90%; }
-      .contributors-section, .popup-content { padding: 10px 6px; max-width: 95%; }
+      .contributors-section { padding: 10px 6px; max-width: 95%; }
     }
   </style>
 </head>
 <body>
+  <!-- (Optional) Logo in top left, adjust left offset to fit with menu if needed -->
+  <!--
+  <div class="site-logo">
+    <img src="bus-logo.png" alt="Bus Tracker Logo" />
+  </div>
+  -->
   <div class="header-container">
+    <!-- Hamburger Menu (top left in header) -->
+    <div class="hamburger-menu-header">
+      <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div id="quickAccessDrawer" class="quick-access-drawer">
+        <a href="history.html" class="quick-access-link">Booking History</a>
+        <a href="faq.html" class="quick-access-link">FAQ</a>
+        <a href="support.html" class="quick-access-link">Support</a>
+        <a href="login.html" class="quick-access-link">Account</a>
+      </div>
+    </div>
     <h1>Bus Tracker</h1>
     <h2>Search for buses</h2>
     <div id="liveTime"></div>
   </div>
-
+  
   <!-- Search Form -->
   <form id="search-form">
     <label for="from-location">From Location</label>
@@ -309,7 +304,7 @@
     </select>
     <button type="submit">Search</button>
   </form>
-
+  
   <!-- Popular routes section BELOW search button -->
   <div class="popular-routes-section">
     <div class="popular-routes-label">Popular Routes</div>
@@ -318,39 +313,29 @@
     </div>
   </div>
 
-  <!-- Hamburger Quick Access -->
-  <div id="quickAccessMenu" class="quick-access-menu">
-    <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open quick access">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <div id="quickAccessDrawer" class="quick-access-drawer">
-      <a href="#" class="quick-access-link" id="showHistory">📄 Booking History</a>
-      <a href="#" class="quick-access-link" id="showFaq">❓ FAQ</a>
-      <a href="#" class="quick-access-link" id="showSupport">🛠️ Support</a>
-    </div>
-  </div>
-
-  <!-- Popups for content -->
-  <div id="popupOverlay" class="popup-overlay"></div>
-  <div id="popupContent" class="popup-content"></div>
-
   <!-- Contributors Section -->
   <div class="contributors-section">
     <div class="contributors-title">Contributors</div>
     <div class="contributors-list">
-      <div>Chiranthana S P</div>
-      <div>Swaroop</div>
-      <div>D N Jaishree</div>
-      <div>Chittara D</div>
-      <div>Jagan Mohan</div>
-      <div>Chiranth G H</div>
+      <div>Chiranthana S (Owner/Dev)</div>
+      <div>You can add more contributors!</div>
       <div><a href="https://github.com/chiranthana007" style="color:#17703f; text-decoration:none;">GitHub</a></div>
     </div>
   </div>
 
   <script>
+    // Hamburger menu toggle (new logic for header-placed menu)
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const quickAccessDrawer = document.getElementById('quickAccessDrawer');
+    hamburgerBtn.onclick = function () {
+      quickAccessDrawer.classList.toggle('open');
+    };
+    document.addEventListener('click', function(e) {
+      if (!document.querySelector('.hamburger-menu-header').contains(e.target)) {
+        quickAccessDrawer.classList.remove('open');
+      }
+    });
+
     // Live Time/Date
     function updateTime() {
       const now = new Date();
@@ -389,74 +374,6 @@
         window.location.href = `buses.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
       }
     });
-
-    // Hamburger menu toggle
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const quickAccessDrawer = document.getElementById('quickAccessDrawer');
-    hamburgerBtn.onclick = function () {
-      quickAccessDrawer.classList.toggle('open');
-    };
-    document.addEventListener('click', function(e) {
-      if (!document.getElementById('quickAccessMenu').contains(e.target)) {
-        quickAccessDrawer.classList.remove('open');
-      }
-    });
-
-    // Popup Logic
-    const popupOverlay = document.getElementById('popupOverlay');
-    const popupContent = document.getElementById('popupContent');
-
-    function openPopup(html) {
-      popupContent.innerHTML = '<button class="close-btn" onclick="closePopup()">✖</button>' + html;
-      popupOverlay.style.display = 'block';
-      popupContent.style.display = 'block';
-    }
-    window.closePopup = function() {
-      popupContent.style.display = 'none';
-      popupOverlay.style.display = 'none';
-    };
-    popupOverlay.onclick = closePopup;
-
-    // Booking History
-    document.getElementById('showHistory').onclick = function(e) {
-      e.preventDefault();
-      openPopup(`
-        <h3>Booking History</h3>
-        <table>
-          <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
-          <tr><td>2025-10-28</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
-          <tr><td>2025-10-29</td><td>Koramangala</td><td>Electronic City</td><td>340E</td></tr>
-          <tr><td>2025-10-30</td><td>Banashankari</td><td>Malleswaram</td><td>176</td></tr>
-        </table>
-      `);
-      quickAccessDrawer.classList.remove('open');
-    };
-
-    // FAQ
-    document.getElementById('showFaq').onclick = function(e) {
-      e.preventDefault();
-      openPopup(`
-        <h3>Frequently Asked Questions</h3>
-        <ul>
-          <li><b>Q:</b> How do I search for a route?<br><b>A:</b> Use the dropdowns on the homepage and click Search.</li>
-          <li><b>Q:</b> How do I see the map?<br><b>A:</b> Select a bus on the results page to see its map and route stops.</li>
-          <li><b>Q:</b> Can I book tickets here?<br><b>A:</b> This is a demo—no live booking yet!</li>
-          <li><b>Q:</b> Can I access from my phone?<br><b>A:</b> Yes, it is mobile-friendly!</li>
-        </ul>
-      `);
-      quickAccessDrawer.classList.remove('open');
-    };
-
-    // Support
-    document.getElementById('showSupport').onclick = function(e) {
-      e.preventDefault();
-      openPopup(`
-        <h3>Support</h3>
-        <div style="margin-bottom:10px;">For help, suggestions, or bug reports, mail:</div>
-        <a href="mailto:chiru@example.com" style="color:#179150;font-weight:bold;">chiru@example.com</a>
-      `);
-      quickAccessDrawer.classList.remove('open');
-    };
   </script>
 </body>
 </html>
