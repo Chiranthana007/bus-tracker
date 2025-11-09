@@ -399,20 +399,40 @@
     };
     popupOverlay.onclick = closePopup;
     // Booking History popup
-    document.getElementById('showHistory').onclick = function(e) {
-      e.preventDefault();
-      openPopup(`
-        <h3>Booking History</h3>
-        <table>
-          <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
-          <tr><td>2025-11-01</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
-          <tr><td>2025-11-02</td><td>Banashankari</td><td>Malleswaram</td><td>96A</td></tr>
-          <tr><td>2025-11-07</td><td>Koramangala</td><td>Electronic City</td><td>356C</td></tr>
-        </table>
-        <em>To see your personal booking, please login.</em>
-      `);
-      quickAccessDrawer.classList.remove('open');
-    };
+document.getElementById('showHistory').onclick = function(e) {
+  e.preventDefault();
+  // Check login state
+  if (localStorage.getItem('bt_loggedin') === 'true') {
+    const email = localStorage.getItem('bt_user') || '???';
+    openPopup(`
+      <h3>Booking History</h3>
+      <div style="font-size:0.96em;margin-bottom:12px;color:#19995e;">
+        Booking history is shown for <b>${email}</b>
+      </div>
+      <table>
+        <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
+        <tr><td>2025-11-01</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
+        <tr><td>2025-11-05</td><td>Koramangala</td><td>Electronic City</td><td>356C</td></tr>
+      </table>
+      <button onclick="logoutUser()" style="background:#eee;color:#219150;border:none;border-radius:8px;padding:6px 13px;cursor:pointer;margin-top:8px;">Logout</button>
+    `);
+  } else {
+    openPopup(`
+      <h3>Booking History</h3>
+      <div>You must be logged in to view your booking history.</div>
+      <button onclick="window.location.href='login.html'" style="background:#26bd6b;color:#fff;border:none;border-radius:7px;padding:8px 22px;margin:16px auto 0 auto;font-size:1em;cursor:pointer;">Go to Login</button>
+    `);
+  }
+  quickAccessDrawer.classList.remove('open');
+};
+
+window.logoutUser = function() {
+  localStorage.removeItem('bt_loggedin');
+  localStorage.removeItem('bt_user');
+  closePopup();
+  setTimeout(() => location.reload(), 200);
+};
+
     // FAQ popup
     document.getElementById('showFaq').onclick = function(e) {
       e.preventDefault();
@@ -501,5 +521,6 @@
   </script>
 </body>
 </html>
+
 
 
