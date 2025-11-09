@@ -99,32 +99,40 @@
       color: #fff;
       background: #17b56a;
     }
-    /* Account Button - top right */
+    /* Account Button - top right (round avatar style) */
     .account-access-header {
       position: absolute;
       top: 16px;
       right: 19px;
       z-index: 56;
     }
-    .account-btn {
-      background: #17b56acc;
-      color: #fff;
-      padding: 10px 17px;
+    .account-avatar-btn {
+      background: #e4fde1;
+      padding: 0;
       border: none;
-      border-radius: 16px;
-      font-size: 1.09em;
-      font-weight: 600;
-      box-shadow: 0 2px 8px #17b56a1c;
-      text-decoration: none;
-      letter-spacing: 1px;
-      transition: background 0.15s, color 0.14s;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      box-shadow: 0 2px 8px #17b56a13;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.16s, background 0.13s;
     }
-    .account-btn:hover {
-      background: #219150;
-      color: #fff;
+    .account-avatar-btn:hover, .account-avatar-btn:focus {
+      background: #bcf5c7;
+      box-shadow: 0 4px 16px #21915022;
     }
-    /* Popup/Modal styling (for all popups!) */
+    .account-avatar-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eee;
+      object-fit: cover;
+      border: 2.5px solid #f2f4ec;
+    }
+    /* Popup/Modal styling */
     .popup-overlay {
       display: none;
       position: fixed;
@@ -325,9 +333,11 @@
         <a href="#" class="quick-access-link" id="showSupport">Support</a>
       </div>
     </div>
-    <!-- Account Button right, always just "Account" -->
+    <!-- Account Button right (round avatar style) -->
     <div class="account-access-header">
-      <button id="accountBtn" class="account-btn">Account</button>
+      <button id="accountBtn" class="account-avatar-btn" aria-label="Account">
+        <img src="avatar.png" alt="Account Profile" class="account-avatar-img"/>
+      </button>
     </div>
     <div id="accountPopupOverlay" class="popup-overlay"></div>
     <div id="accountPopupContent" class="popup-content"></div>
@@ -388,7 +398,7 @@
       }
     });
 
-    // Account button modal logic (not email in header)
+    // Account button modal logic (round avatar style button)
     const accountBtn = document.getElementById('accountBtn');
     const accountPopupOverlay = document.getElementById('accountPopupOverlay');
     const accountPopupContent = document.getElementById('accountPopupContent');
