@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Bus Tracker</title>
+  <style>
+    body { background: #f6fff6; font-family: Arial, sans-serif; }
+    .login-container {
+      background: #fff;
+      max-width: 355px;
+      margin: 60px auto 0 auto;
+      box-shadow: 0 4px 28px #17703f18;
+      border-radius: 18px;
+      padding: 34px 32px 24px 32px;
+      text-align: center;
+    }
+    h2 { color: #22995a; margin-bottom: 16px; }
+    label { display:block; margin-top: 14px; color: #15804b; font-weight:600; }
+    input[type="email"], input[type="password"] {
+      width: 100%; padding: 10px; border-radius: 7px; border: 1px solid #cceede; margin: 10px 0 16px 0; font-size: 1em;
+    }
+    .login-btn {
+      background: #17b56a;
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 9px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    .login-btn:hover { background: #126338; }
+    .login-footer { margin-top: 24px; color: #888; font-size:0.97em;}
+    .demo-mail { color: #354; margin: 14px 0 9px 0; font-size:0.98em;}
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <div>Use demo email: <div class="demo-mail"><b>demo1@example.com</b><br>or<br><b>demo2@example.com</b></div>Password: <b>123456</b></div>
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="email" required />
+      <label>Password</label>
+      <input type="password" id="password" required />
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+    <div class="login-footer">
+      You can use the above demo mail to login.<br>If logged in, Booking History will be personalized!
+    </div>
+  </div>
+  <script>
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      // Demo login check
+      if (
+        (email === 'demo1@example.com' || email === 'demo2@example.com') &&
+        password === '123456'
+      ) {
+        localStorage.setItem('bt_loggedin', 'true');
+        localStorage.setItem('bt_user', email);
+        window.location.href = 'index.html';
+      } else {
+        alert("Invalid demo email or password.");
+      }
+    }
+  </script>
+</body>
+</html>
