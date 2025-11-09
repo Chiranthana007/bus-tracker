@@ -5,57 +5,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login | Bus Tracker</title>
   <style>
-    body { background: #f6fff6; font-family: Arial, sans-serif; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(to bottom right, #eaf8fe 0%, #f4fff8 100%);
+      font-family: Arial, sans-serif;
+    }
     .login-container {
-      background: #fff;
-      max-width: 355px;
-      margin: 60px auto 0 auto;
-      box-shadow: 0 4px 28px #17703f18;
-      border-radius: 18px;
-      padding: 40px 32px 32px 32px;
+      margin: 50px auto 0 auto;
+      max-width: 375px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 22px;
+      box-shadow: 0 8px 48px #48bb781c;
+      padding: 36px 28px 30px 28px;
       text-align: center;
     }
-    h2 { color: #22995a; margin-bottom: 34px; }
-    .gmail-login-btn {
-      background: linear-gradient(90deg, #4caf50 0%, #43cd7b 100%);
-      color: #fff;
-      border: none;
-      border-radius: 9px;
-      padding: 15px 34px;
-      font-size: 1.19em;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-      margin-top: 24px;
-      box-shadow: 0 2px 12px #43cd7b22;
+    .login-icon {
+      width: 54px;
+      height: 54px;
+      margin-bottom: 10px;
+      background: #f8fef9;
+      border-radius: 17px;
+      box-shadow: 0 2px 9px #48bb7826;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 13px;
-      transition: background 0.16s;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .gmail-login-btn:hover { background: #219150; }
-    .gmail-logo {
+    .login-icon img {
+      width: 34px;
+      height: 34px;
+    }
+    h2 {
+      color: #20975c;
+      font-size: 2em;
+      margin-bottom: 11px;
+      margin-top: 9px;
+      letter-spacing: 1px;
+    }
+    .login-desc {
+      color: #344b44;
+      margin-bottom: 22px;
+      font-size: 1.06em;
+    }
+    .login-form label {
+      text-align: left;
+      display: block;
+      color: #01502e;
+      font-weight: bold;
+      margin: 13px 0 5px 3px;
+    }
+    .login-form input[type="email"], .login-form input[type="password"] {
+      width: 100%;
+      padding: 11px;
+      font-size: 1.03em;
+      outline: none;
+      border-radius: 8px;
+      border: 1px solid #bbeed7;
+      margin-bottom: 10px;
+      background: #f8fff8;
+      transition: border 0.13s;
+    }
+    .login-form input[type="email"]:focus, .login-form input[type="password"]:focus {
+      border: 1.6px solid #43cd7b;
+    }
+    .login-form .forgot-link {
+      display: inline-block;
+      float: right;
+      margin-top: -30px;
+      margin-right: 2px;
+      font-size: 0.98em;
+      color: #30a380;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .login-btn {
+      width: 100%;
+      background: #222;
+      color: #fff;
+      font-size: 1.18em;
+      padding: 13px 0;
+      border-radius: 11px;
+      border: none;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 18px 0 10px 0;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .login-btn:hover {
+      background: #17703f;
+    }
+    .social-login-row {
+      margin-top: 15px;
+      margin-bottom: -13px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      align-items: center;
+    }
+    .social-btn {
+      background: #fff;
+      border: 1px solid #e3eee3;
+      border-radius: 12px;
+      width: 54px;
+      height: 54px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 6px #21ad6066;
+      transition: box-shadow 0.17s;
+      margin: 0 auto;
+    }
+    .social-btn:hover {
+      box-shadow: 0 2px 16px #21ad6022;
+      border: 1.5px solid #32c666;
+    }
+    .social-btn img {
       width: 28px;
       height: 28px;
     }
-    .login-footer { margin-top: 34px; color: #888; font-size:0.97em;}
+    @media (max-width: 480px) {
+      .login-container { max-width:98vw; padding:18px 1vw; }
+      .social-btn { width: 41px; height: 41px;}
+      .social-btn img { width: 22px; height: 22px;}
+    }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <h2>Login</h2>
-    <button class="gmail-login-btn" id="demoGmailLogin">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" class="gmail-logo" alt="Gmail"/>
-      Login with Gmail
-    </button>
-    <div class="login-footer">This button simulates Gmail login.<br>Real Google auth needs backend setup.</div>
+    <div class="login-icon">
+      <img src="https://img.icons8.com/fluency-systems-filled/48/enter-2.png" alt="Login Icon">
+    </div>
+    <h2>Sign in with email</h2>
+    <div class="login-desc">
+      Make a new booking, bring your words, data, and tickets together. For free.
+    </div>
+    <form class="login-form" id="loginForm">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autocomplete="email" placeholder="Enter your email">
+      <label for="password">Password
+        <span style="float:right;font-size:0.94em;font-weight:400;">
+          <a class="forgot-link" href="#">Forgot password?</a>
+        </span>
+      </label>
+      <input type="password" id="password" required autocomplete="current-password" placeholder="Password">
+      <button type="submit" class="login-btn">Get Started</button>
+    </form>
+    <div style="margin-top: 16px; font-size: 1.05em; color: #888;">Or sign in with</div>
+    <div class="social-login-row">
+      <button class="social-btn" title="Sign in with Google" onclick="demoSocial('google')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Google">
+      </button>
+    </div>
   </div>
   <script>
-    document.getElementById('demoGmailLogin').onclick = function() {
-      // Simulate login!
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
       localStorage.setItem('bt_loggedin', 'true');
-      localStorage.setItem('bt_user', 'your.email@gmail.com');
+      localStorage.setItem('bt_user', document.getElementById('email').value);
+      window.location.href = 'index.html';
+    }
+    // Only Google login
+    function demoSocial(type) {
+      localStorage.setItem('bt_loggedin', 'true');
+      localStorage.setItem('bt_user', 'gmail.user@gmail.com');
       window.location.href = 'index.html';
     }
   </script>
