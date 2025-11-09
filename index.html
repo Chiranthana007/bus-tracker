@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bus Tracker</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
       margin: 0;
@@ -28,26 +27,7 @@
       align-items: center;
       justify-content: center;
     }
-    /* Logo (optional) */
-    .site-logo {
-      position: absolute;
-      top: 18px;
-      left: 72px;
-      z-index: 51;
-    }
-    .site-logo img {
-      height: 54px;
-      width: auto;
-      border-radius: 11px;
-      box-shadow: 0 2px 9px #094d3040;
-      background: #fff;
-      padding: 3px 9px;
-    }
-    @media (max-width: 560px) {
-      .site-logo { left: 54px; }
-      .site-logo img { height: 38px; padding: 2px 5px; }
-    }
-    /* Hamburger Menu inside header, left */
+    /* Hamburger Menu - top left */
     .hamburger-menu-header {
       position: absolute;
       top: 16px;
@@ -119,13 +99,118 @@
       color: #fff;
       background: #17b56a;
     }
+    /* Account Button - top right */
+    .account-access-header {
+      position: absolute;
+      top: 16px;
+      right: 19px;
+      z-index: 56;
+    }
+    .account-btn {
+      background: #17b56acc;
+      color: #fff;
+      padding: 10px 17px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.09em;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #17b56a1c;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: background 0.15s, color 0.14s;
+    }
+    .account-btn:hover {
+      background: #219150;
+      color: #fff;
+    }
+    /* Popup/Modal styling (for all popups!) */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      z-index: 110;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(40,80,80,0.18);
+    }
+    .popup-content {
+      display: none;
+      position: fixed;
+      z-index: 120;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background: #fff;
+      border-radius: 14px;
+      padding: 23px 25px 18px 25px;
+      min-width: 275px;
+      max-width: 95vw;
+      box-shadow: 0 6px 35px #07934d38;
+      font-size: 1.08em;
+      color: #165624;
+    }
+    .popup-content h3 {
+      color: #189058;
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
+    .popup-content .close-btn {
+      background: #eee;
+      color: #446;
+      border: none;
+      border-radius: 8px;
+      padding: 2px 14px;
+      font-size: 1.06em;
+      float: right;
+      cursor: pointer;
+      margin-top: -10px;
+      margin-right: -8px;
+    }
+    .popup-content ul, .popup-content table { margin-top: 13px; }
+    .popup-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+    .popup-content th, .popup-content td {
+      border: 1px solid #e0e0e0;
+      padding: 5px 7px;
+      text-align: center;
+    }
+    .popup-content th { background: #e7fbe7; color: #1d8144;}
+    /* Contributors button style */
+    .contributors-section {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 8px #21915033;
+      width: 88%;
+      max-width: 350px;
+      margin: 24px auto;
+      padding: 18px 25px;
+      color: #333;
+      font-size: 1em;
+      text-align: center;
+    }
+    .contributors-btn {
+      background: #26bd6b;
+      color: #fff;
+      padding: 10px 27px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.07em;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #21915022;
+      cursor: pointer;
+      margin-bottom: 7px;
+      letter-spacing: 0.5px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .contributors-btn:hover {
+      background: #219150;
+      color: #fff;
+    }
     @media (max-width: 750px) {
-      .hamburger-menu-header { top: 10px !important; left: 10px !important; }
-      .quick-access-drawer {
-        min-width: 112px;
-        padding: 8px 7px;
-        font-size: 0.93em;
-      }
+      .hamburger-menu-header { top: 8px !important; left: 7px !important; }
+      .account-access-header { top: 8px !important; right: 7px !important; }
+      .popup-content { padding: 10px 5px; min-width: 60vw; }
     }
     h1 {
       color: white;
@@ -222,46 +307,11 @@
       background: #17703f;
       transform: scale(1.08);
     }
-    .contributors-section {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 1px 8px #21915033;
-      width: 88%;
-      max-width: 350px;
-      margin: 24px auto;
-      padding: 18px 25px;
-      color: #333;
-      font-size: 1em;
-      text-align: center;
-    }
-    .contributors-title {
-      color: #219150;
-      font-size: 1.06em;
-      letter-spacing: 1px;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-    .contributors-list {
-      margin-top: 9px;
-      font-size: 0.98em;
-    }
-    @media (max-width: 750px) {
-      h1 { font-size: 2em; }
-      h2, label, button, select { font-size: 1em; }
-      select, button { width: 90%; }
-      .contributors-section { padding: 10px 6px; max-width: 95%; }
-    }
   </style>
 </head>
 <body>
-  <!-- (Optional) Logo in top left, adjust left offset to fit with menu if needed -->
-  <!--
-  <div class="site-logo">
-    <img src="bus-logo.png" alt="Bus Tracker Logo" />
-  </div>
-  -->
   <div class="header-container">
-    <!-- Hamburger Menu (top left in header) -->
+    <!-- Hamburger Menu left -->
     <div class="hamburger-menu-header">
       <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menu">
         <span></span>
@@ -269,17 +319,22 @@
         <span></span>
       </button>
       <div id="quickAccessDrawer" class="quick-access-drawer">
-        <a href="history.html" class="quick-access-link">Booking History</a>
-        <a href="faq.html" class="quick-access-link">FAQ</a>
-        <a href="support.html" class="quick-access-link">Support</a>
-        <a href="login.html" class="quick-access-link">Account</a>
+        <a href="#" class="quick-access-link" id="showHistory">Booking History</a>
+        <a href="#" class="quick-access-link" id="showFaq">FAQ</a>
+        <a href="#" class="quick-access-link" id="showSupport">Support</a>
       </div>
+    </div>
+    <!-- Account Button right -->
+    <div class="account-access-header">
+      <a href="login.html" class="account-btn">Account</a>
     </div>
     <h1>Bus Tracker</h1>
     <h2>Search for buses</h2>
     <div id="liveTime"></div>
   </div>
-  
+  <!-- Popups for main menu -->
+  <div id="popupOverlay" class="popup-overlay"></div>
+  <div id="popupContent" class="popup-content"></div>
   <!-- Search Form -->
   <form id="search-form">
     <label for="from-location">From Location</label>
@@ -304,27 +359,21 @@
     </select>
     <button type="submit">Search</button>
   </form>
-  
   <!-- Popular routes section BELOW search button -->
   <div class="popular-routes-section">
     <div class="popular-routes-label">Popular Routes</div>
-    <div class="popular-routes-list" id="popularRoutes">
-      <!-- routes will be added here by JS -->
-    </div>
+    <div class="popular-routes-list" id="popularRoutes"></div>
   </div>
-
-  <!-- Contributors Section -->
+  <!-- Contributors Section as button! -->
   <div class="contributors-section">
-    <div class="contributors-title">Contributors</div>
-    <div class="contributors-list">
-      <div>Chiranthana S (Owner/Dev)</div>
-      <div>You can add more contributors!</div>
-      <div><a href="https://github.com/chiranthana007" style="color:#17703f; text-decoration:none;">GitHub</a></div>
-    </div>
+    <button class="contributors-btn" id="showContributors">
+      Show Contributors
+    </button>
   </div>
-
+  <div id="contributorsPopupOverlay" class="popup-overlay"></div>
+  <div id="contributorsPopupContent" class="popup-content"></div>
   <script>
-    // Hamburger menu toggle (new logic for header-placed menu)
+    // Hamburger menu toggle
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const quickAccessDrawer = document.getElementById('quickAccessDrawer');
     hamburgerBtn.onclick = function () {
@@ -336,6 +385,83 @@
       }
     });
 
+    // Main Menu Popups: History, FAQ, Support
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupContent = document.getElementById('popupContent');
+    function openPopup(html) {
+      popupContent.innerHTML = '<button class="close-btn" onclick="closePopup()">✖</button>' + html;
+      popupOverlay.style.display = 'block';
+      popupContent.style.display = 'block';
+    }
+    window.closePopup = function() {
+      popupContent.style.display = 'none';
+      popupOverlay.style.display = 'none';
+    };
+    popupOverlay.onclick = closePopup;
+    // Booking History popup
+    document.getElementById('showHistory').onclick = function(e) {
+      e.preventDefault();
+      openPopup(`
+        <h3>Booking History</h3>
+        <table>
+          <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
+          <tr><td>2025-11-01</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
+          <tr><td>2025-11-02</td><td>Banashankari</td><td>Malleswaram</td><td>96A</td></tr>
+          <tr><td>2025-11-07</td><td>Koramangala</td><td>Electronic City</td><td>356C</td></tr>
+        </table>
+        <em>To see your personal booking, please login.</em>
+      `);
+      quickAccessDrawer.classList.remove('open');
+    };
+    // FAQ popup
+    document.getElementById('showFaq').onclick = function(e) {
+      e.preventDefault();
+      openPopup(`
+        <h3>Frequently Asked Questions</h3>
+        <ul>
+          <li><b>Q:</b> How do I search for buses?<br><b>A:</b> Choose locations and click Search on the home page.</li>
+          <li><b>Q:</b> How do I see my bookings?<br><b>A:</b> Click "Booking History" in the menu. Login to save your history.</li>
+          <li><b>Q:</b> Why is the map blank?<br><b>A:</b> Please select a route and a bus to see the stops on the map.</li>
+          <li><b>Q:</b> Can I use on mobile?<br><b>A:</b> Yes, fully mobile-friendly!</li>
+        </ul>
+      `);
+      quickAccessDrawer.classList.remove('open');
+    };
+    // Support popup
+    document.getElementById('showSupport').onclick = function(e) {
+      e.preventDefault();
+      openPopup(`
+        <h3>Support</h3>
+        <div style="margin-bottom:10px;">For technical support, suggestions or bug reports, contact:</div>
+        <div>Email: <b>chiru@example.com</b></div>
+        <div>Or use the feedback form on GitHub.</div>
+      `);
+      quickAccessDrawer.classList.remove('open');
+    };
+    // Contributors Button/Popup
+    const showContributorsBtn = document.getElementById('showContributors');
+    const contributorsPopupOverlay = document.getElementById('contributorsPopupOverlay');
+    const contributorsPopupContent = document.getElementById('contributorsPopupContent');
+    showContributorsBtn.onclick = function() {
+      contributorsPopupContent.innerHTML =
+        `<button class="close-btn" onclick="closeContribPopup()">✖</button>
+         <h3>Contributors</h3>
+         <ul>
+           <li>Chiranthana S (Owner/Dev)</li>
+           <li>Student1 (UI)</li>
+           <li>Student2 (Backend)</li>
+           <li>Student3 (Testing)</li>
+           <!-- Add more names, emails, GitHub links here -->
+         </ul>
+         <div><a href="https://github.com/chiranthana007" target="_blank" style="color:#17703f;text-decoration:none;">GitHub</a></div>`;
+      contributorsPopupOverlay.style.display = 'block';
+      contributorsPopupContent.style.display = 'block';
+    };
+    window.closeContribPopup = function() {
+      contributorsPopupContent.style.display = 'none';
+      contributorsPopupOverlay.style.display = 'none';
+    };
+    contributorsPopupOverlay.onclick = window.closeContribPopup;
     // Live Time/Date
     function updateTime() {
       const now = new Date();
@@ -344,15 +470,12 @@
     }
     setInterval(updateTime, 1000);
     updateTime();
-
-    // Popular Routes Configuration
+    // Popular Routes
     const popularRoutes = [
       { from: "Kengeri", to: "Yelahanka" },
       { from: "Koramangala", to: "Electronic City" },
-      { from: "Banashankari", to: "Malleswaram" },
+      { from: "Banashankari", to: "Malleswaram" }
     ];
-
-    // Render Popular Routes as clickable badges
     const routesDiv = document.getElementById('popularRoutes');
     popularRoutes.forEach(route => {
       const badge = document.createElement('button');
@@ -364,8 +487,7 @@
       };
       routesDiv.appendChild(badge);
     });
-
-    // Handle normal search form submit
+    // Search form
     document.getElementById('search-form').addEventListener('submit', function(event) {
       event.preventDefault();
       const from = document.getElementById('from-location').value;
