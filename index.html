@@ -118,6 +118,7 @@
       text-decoration: none;
       letter-spacing: 1px;
       transition: background 0.15s, color 0.14s;
+      cursor: pointer;
     }
     .account-btn:hover {
       background: #219150;
@@ -324,10 +325,12 @@
         <a href="#" class="quick-access-link" id="showSupport">Support</a>
       </div>
     </div>
-    <!-- Account Button right -->
+    <!-- Account Button right, always just "Account" -->
     <div class="account-access-header">
-      <a href="login.html" class="account-btn">Account</a>
+      <button id="accountBtn" class="account-btn">Account</button>
     </div>
+    <div id="accountPopupOverlay" class="popup-overlay"></div>
+    <div id="accountPopupContent" class="popup-content"></div>
     <h1>Bus Tracker</h1>
     <h2>Search for buses</h2>
     <div id="liveTime"></div>
@@ -385,6 +388,47 @@
       }
     });
 
+    // Account button modal logic (not email in header)
+    const accountBtn = document.getElementById('accountBtn');
+    const accountPopupOverlay = document.getElementById('accountPopupOverlay');
+    const accountPopupContent = document.getElementById('accountPopupContent');
+    accountBtn.onclick = function() {
+      const loggedIn = localStorage.getItem('bt_loggedin') === 'true';
+      const user = localStorage.getItem('bt_user');
+      if (loggedIn && user) {
+        accountPopupContent.innerHTML = `
+          <button class="close-btn" onclick="closeAccPopup()">✖</button>
+          <h3>Account Details</h3>
+          <div style="font-size:1.03em;margin-bottom:13px;color:#119070;">
+            Logged in as:<br><b>${user}</b>
+          </div>
+          <button onclick="logoutUser()" style="background:#17b56a;color:#fff;font-weight:600;border:none;border-radius:12px;padding:8px 18px;font-size:1em;cursor:pointer;">Logout</button>
+        `;
+      } else {
+        accountPopupContent.innerHTML = `
+          <button class="close-btn" onclick="closeAccPopup()">✖</button>
+          <h3>Your Account</h3>
+          <div style="margin-bottom:17px;">Sign in to access your bookings and details.</div>
+          <button onclick="window.location.href='login.html'" style="background:#26bd6b;color:#fff;border:none;border-radius:7px;padding:8px 22px;margin:6px auto 0 auto;font-size:1em;cursor:pointer;">Go to Login</button>
+        `;
+      }
+      accountPopupOverlay.style.display = 'block';
+      accountPopupContent.style.display = 'block';
+    };
+    window.closeAccPopup = function() {
+      accountPopupContent.style.display = 'none';
+      accountPopupOverlay.style.display = 'none';
+    };
+    accountPopupOverlay.onclick = window.closeAccPopup;
+
+    // Logout handler
+    window.logoutUser = function() {
+      localStorage.removeItem('bt_loggedin');
+      localStorage.removeItem('bt_user');
+      closeAccPopup();
+      setTimeout(() => location.reload(), 200);
+    };
+
     // Main Menu Popups: History, FAQ, Support
     const popupOverlay = document.getElementById('popupOverlay');
     const popupContent = document.getElementById('popupContent');
@@ -399,40 +443,30 @@
     };
     popupOverlay.onclick = closePopup;
     // Booking History popup
-document.getElementById('showHistory').onclick = function(e) {
-  e.preventDefault();
-  // Check login state
-  if (localStorage.getItem('bt_loggedin') === 'true') {
-    const email = localStorage.getItem('bt_user') || '???';
-    openPopup(`
-      <h3>Booking History</h3>
-      <div style="font-size:0.96em;margin-bottom:12px;color:#19995e;">
-        Booking history is shown for <b>${email}</b>
-      </div>
-      <table>
-        <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
-        <tr><td>2025-11-01</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
-        <tr><td>2025-11-05</td><td>Koramangala</td><td>Electronic City</td><td>356C</td></tr>
-      </table>
-      <button onclick="logoutUser()" style="background:#eee;color:#219150;border:none;border-radius:8px;padding:6px 13px;cursor:pointer;margin-top:8px;">Logout</button>
-    `);
-  } else {
-    openPopup(`
-      <h3>Booking History</h3>
-      <div>You must be logged in to view your booking history.</div>
-      <button onclick="window.location.href='login.html'" style="background:#26bd6b;color:#fff;border:none;border-radius:7px;padding:8px 22px;margin:16px auto 0 auto;font-size:1em;cursor:pointer;">Go to Login</button>
-    `);
-  }
-  quickAccessDrawer.classList.remove('open');
-};
-
-window.logoutUser = function() {
-  localStorage.removeItem('bt_loggedin');
-  localStorage.removeItem('bt_user');
-  closePopup();
-  setTimeout(() => location.reload(), 200);
-};
-
+    document.getElementById('showHistory').onclick = function(e) {
+      e.preventDefault();
+      if (localStorage.getItem('bt_loggedin') === 'true') {
+        const email = localStorage.getItem('bt_user') || '???';
+        openPopup(`
+          <h3>Booking History</h3>
+          <div style="font-size:0.96em;margin-bottom:12px;color:#19995e;">
+            Booking history is shown for <b>${email}</b>
+          </div>
+          <table>
+            <tr><th>Date</th><th>From</th><th>To</th><th>Bus</th></tr>
+            <tr><td>2025-11-01</td><td>Kengeri</td><td>Yelahanka</td><td>401K</td></tr>
+            <tr><td>2025-11-05</td><td>Koramangala</td><td>Electronic City</td><td>356C</td></tr>
+          </table>
+        `);
+      } else {
+        openPopup(`
+          <h3>Booking History</h3>
+          <div>You must be logged in to view your booking history.</div>
+          <button onclick="window.location.href='login.html'" style="background:#26bd6b;color:#fff;border:none;border-radius:7px;padding:8px 22px;margin:16px auto 0 auto;font-size:1em;cursor:pointer;">Go to Login</button>
+        `);
+      }
+      quickAccessDrawer.classList.remove('open');
+    };
     // FAQ popup
     document.getElementById('showFaq').onclick = function(e) {
       e.preventDefault();
@@ -467,12 +501,10 @@ window.logoutUser = function() {
         `<button class="close-btn" onclick="closeContribPopup()">✖</button>
          <h3>Contributors</h3>
          <ul>
-           <li>Chiranthana S (UI)</li>
-           <li>ShivSwaroop S (Dev)</li>
-           <li>D N Jaishree (Backend)</li>
-           <li>Chittara D (Backend)</li>
-           <li>Jagan Mohan(Testing)</li>
-           <li>Chiranth G H(Testing)</li>
+           <li>Chiranthana S (Owner/Dev)</li>
+           <li>Student1 (UI)</li>
+           <li>Student2 (Backend)</li>
+           <li>Student3 (Testing)</li>
            <!-- Add more names, emails, GitHub links here -->
          </ul>
          <div><a href="https://github.com/chiranthana007" target="_blank" style="color:#17703f;text-decoration:none;">GitHub</a></div>`;
@@ -521,6 +553,3 @@ window.logoutUser = function() {
   </script>
 </body>
 </html>
-
-
-
